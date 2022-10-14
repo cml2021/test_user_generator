@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 User object represents a test user with a name and optionally an email address, phone number, age, birthday, height, and weight.
 */
 class User {
-    constructor(name, email) {
+    constructor(email) {
         this.name = generateName();
         this.email = generateEmail(this.name);
         this.phone = undefined;
@@ -87,7 +87,12 @@ function generateEmail(name) {
 };
 
 function createUser(req, res) {
-    console.log(req.body);
+    let email = undefined;
+    if ("email" in req.body) {
+        email = req.body.email;
+    }
+    const user = new User(email);
+    res.send(user);
 }
 
 // Request Handlers
@@ -96,4 +101,6 @@ app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`)
 });
 
-app.post("/create", createUser());
+app.post("/create", (req, res) => {
+    createUser(req, res);
+});
