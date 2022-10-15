@@ -4,6 +4,9 @@ const femaleFirstNamesLib = require('@stdlib/datasets-female-first-names-en');
 const maleFirstNamesLib = require('@stdlib/datasets-male-first-names-en');
 const lastNamesLib = require('common-last-names');
 const emailDomains = require('email-domains');
+const DateGenerator = require('random-date-generator');
+const addYears = require('date-fns/addYears');
+const { add } = require('date-fns');
 
 const femaleFirstNames = femaleFirstNamesLib();
 const maleFirstNames = maleFirstNamesLib();
@@ -17,8 +20,8 @@ class User {
         this.name = generateName(this.gender);
         hasEmail === true ? this.email = generateEmail(this.name) : this.email = undefined;
         hasPhone === true ? this.phone = generatePhone() : this.phone = undefined;
-        this.age = undefined;
         this.birthday = undefined;
+        this.age = undefined;
         this.height = undefined;
         this.weight = undefined;
     }
@@ -129,5 +132,19 @@ function generatePhone() {
     }
     return `(${areaCode}) ${exchangeCode}-${subscriberCode}`;
 }
+
+/*
+Generates a random birthdate.
+
+@return 
+*/
+function generateBirthday() {
+    const today = new Date();
+    const startDate = addYears(today, -85);
+    const endDate = addYears(today, -18);
+    const birthdate = DateGenerator.getRandomDateInRange(startDate, endDate);
+    console.log(birthdate);
+    // TODO use date-fns format
+};
 
 module.exports = { createUser }
