@@ -1,13 +1,11 @@
 'use strict';
 
+const random = require('random');
 const femaleFirstNamesLib = require('@stdlib/datasets-female-first-names-en');
 const maleFirstNamesLib = require('@stdlib/datasets-male-first-names-en');
 const lastNamesLib = require('common-last-names');
 const emailDomains = require('email-domains');
-const DateGenerator = require('random-date-generator');
-const addYears = require('date-fns/addYears');
-const { add } = require('date-fns');
-
+const {addYears, getYear} = require('date-fns');
 const femaleFirstNames = femaleFirstNamesLib();
 const maleFirstNames = maleFirstNamesLib();
 
@@ -20,19 +18,17 @@ class User {
         this.name = generateName(this.gender);
         hasEmail === true ? this.email = generateEmail(this.name) : this.email = undefined;
         hasPhone === true ? this.phone = generatePhone() : this.phone = undefined;
-        this.birthday = undefined;
-        this.age = undefined;
+        hasAge === true ? this.age = getYear(new Date()) - generateBirthYear() : this.age = undefined;
         this.height = undefined;
         this.weight = undefined;
     }
 };
 
-// condition ? exprIfTrue : exprIfFalse
-
 function createUser(req, res) {
     let [hasEmail, hasPhone, hasAge, hasHeight, hasWeight] = Array(5).fill(undefined);
     "email" in req.body ? hasEmail = true : hasEmail = undefined;
     "phone" in req.body ? hasPhone = true : hasPhone = undefined;
+    "age" in req.body ? hasAge = true : hasAge = undefined;
     const user = new User(hasEmail, hasPhone, hasAge, hasHeight, hasWeight);
     res.send(user);
 };
@@ -43,7 +39,7 @@ Randomly sets gender.
 @return {string}    gender
 */
 function setGender() {
-    const gender = Math.round(Math.random()) === 1 ? "Female" : "Male";
+    const gender = random.boolean() === true ? "Female" : "Male";
     return gender;
 }
 
@@ -57,9 +53,9 @@ Generates a random first and last name.
 function generateName(gender) {
     let firstName = "";
     if (gender === "Female") {
-        firstName = femaleFirstNames[Math.floor(Math.random() * femaleFirstNames.length)];
+        firstName = femaleFirstNames[random.int((0), (femaleFirstNames.length))];
     } else {
-        firstName = maleFirstNames[Math.floor(Math.random() * maleFirstNames.length)];
+        firstName = maleFirstNames[random.int((0), (maleFirstNames.length))];
     }
     const lastName = lastNamesLib.random();
     return `${firstName} ${lastName}`;
@@ -80,11 +76,8 @@ function generateEmail(name) {
     const domain = emailDomains.random();
     let email = "";
 
-    
-    let max = 5;
-    let min = 1;
     // randomly select an email address pattern
-    switch (Math.floor(Math.random() * (max - min + 1) + min)) {
+    switch (random.int((1), (5))) {
         case 1:
             email = `${first}${last}`;
             break;
@@ -102,9 +95,9 @@ function generateEmail(name) {
     }
 
     // add random numbers to email address half the time
-    let hasNumbers = Math.round(Math.random()) === 1 ? true : false;
+    let hasNumbers = random.boolean() === true ? true : false;
     if (hasNumbers === true) {
-        let nums = Math.floor(Math.random() * 1000);
+        let nums = random.int((0), (9999));
         return `${email}${nums.toString()}@${domain}`;
     }
     return `${email}@${domain}`;
@@ -116,15 +109,9 @@ Generates a random phone number.
 @return {string}    phone number
 */
 function generatePhone() {
-    let min = 100;
-    let max = 999;
-    let areaCode = Math.floor(Math.random() * (max - min + 1) + min);
-
+    let areaCode = random.int((100), (999));
     let exchangeCode = "555"
-
-    min = 0;
-    max = 9999;
-    let subscriberCode = Math.floor(Math.random() * (max - min + 1) + min);
+    let subscriberCode = random.int((0), (9999));
     subscriberCode = subscriberCode.toString();
     // ensure subscriberCode is always 4 digits long
     while (subscriberCode.length < 4) {
@@ -138,13 +125,12 @@ Generates a random birthdate.
 
 @return 
 */
-function generateBirthday() {
+function generateBirthYear() {
     const today = new Date();
-    const startDate = addYears(today, -85);
-    const endDate = addYears(today, -18);
-    const birthdate = DateGenerator.getRandomDateInRange(startDate, endDate);
-    console.log(birthdate);
-    // TODO use date-fns format
+    const startYear = getYear(addYears(today, -85));
+    const endYear = getYear(addYears(today, -18));
+    const birthYear = random.int((startYear), (endYear));
+    return birthYear;
 };
 
 module.exports = { createUser }
