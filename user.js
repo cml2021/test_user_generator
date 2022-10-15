@@ -1,6 +1,6 @@
 'use strict';
 
-const femaleFirstNamesLib = require( '@stdlib/datasets-female-first-names-en' );
+const femaleFirstNamesLib = require('@stdlib/datasets-female-first-names-en');
 const maleFirstNamesLib = require('@stdlib/datasets-male-first-names-en');
 const lastNamesLib = require('common-last-names');
 const emailDomains = require('email-domains');
@@ -9,13 +9,14 @@ const femaleFirstNames = femaleFirstNamesLib();
 const maleFirstNames = maleFirstNamesLib();
 
 /*
-User object represents a test user with a name and optionally an email address, phone number, age, birthday, height, and weight.
+Class representing a test user.
 */
 class User {
-    constructor(email) {
-        this.name = generateName();
-        this.email = generateEmail(this.name);
-        this.phone = undefined;
+    constructor(hasEmail, hasPhone, hasAge, hasHeight, hasWeight) {
+        this.gender = setGender();
+        this.name = generateName(this.gender);
+        hasEmail === true ? this.email = generateEmail(this.name) : this.email = undefined;
+        hasPhone === true ? this.phone = generatePhone() : this.phone = undefined;
         this.age = undefined;
         this.birthday = undefined;
         this.height = undefined;
@@ -23,15 +24,36 @@ class User {
     }
 };
 
+// condition ? exprIfTrue : exprIfFalse
+
+function createUser(req, res) {
+    let [hasEmail, hasPhone, hasAge, hasHeight, hasWeight] = Array(5).fill(undefined);
+    "email" in req.body ? hasEmail = true : hasEmail = undefined;
+    "phone" in req.body ? hasPhone = true : hasPhone = undefined;
+    const user = new User(hasEmail, hasPhone, hasAge, hasHeight, hasWeight);
+    res.send(user);
+};
+
+/*
+Randomly sets gender.
+
+@return {string}    gender
+*/
+function setGender() {
+    const gender = Math.round(Math.random()) === 1 ? "Female" : "Male";
+    return gender;
+}
+
 /*
 Generates a random first and last name.
 
+@param  {string}    gender      user's gender
+
 @return {string}    name     
 */
-function generateName() {
-    let isFemale = Math.round(Math.random()) === 1 ? true : false;
+function generateName(gender) {
     let firstName = "";
-    if (isFemale === true) {
+    if (gender === "Female") {
         firstName = femaleFirstNames[Math.floor(Math.random() * femaleFirstNames.length)];
     } else {
         firstName = maleFirstNames[Math.floor(Math.random() * maleFirstNames.length)];
@@ -51,11 +73,15 @@ function generateEmail(name) {
     // assumes first and last name are each single strings
     const nameArr = name.split(" ");
     const first = nameArr[0].toLowerCase();
-    const last = nameArr[1].toLowerCase(); 
+    const last = nameArr[1].toLowerCase();
     const domain = emailDomains.random();
     let email = "";
 
-    switch (Math.floor(Math.random() * 5 + 1)) {
+    
+    let max = 5;
+    let min = 1;
+    // randomly select an email address pattern
+    switch (Math.floor(Math.random() * (max - min + 1) + min)) {
         case 1:
             email = `${first}${last}`;
             break;
@@ -72,21 +98,36 @@ function generateEmail(name) {
             email = `${first}${last[0]}`
     }
 
+    // add random numbers to email address half the time
     let hasNumbers = Math.round(Math.random()) === 1 ? true : false;
     if (hasNumbers === true) {
-        let nums = Math.floor(Math.random()*1000);
+        let nums = Math.floor(Math.random() * 1000);
         return `${email}${nums.toString()}@${domain}`;
     }
     return `${email}@${domain}`;
 };
 
-function createUser(req, res) {
-    let email = undefined;
-    if ("email" in req.body) {
-        email = req.body.email;
+/*
+Generates a random phone number.
+
+@return {string}    phone number
+*/
+function generatePhone() {
+    let min = 100;
+    let max = 999;
+    let areaCode = Math.floor(Math.random() * (max - min + 1) + min);
+
+    let exchangeCode = "555"
+
+    min = 0;
+    max = 9999;
+    let subscriberCode = Math.floor(Math.random() * (max - min + 1) + min);
+    subscriberCode = subscriberCode.toString();
+    // ensure subscriberCode is always 4 digits long
+    while (subscriberCode.length < 4) {
+        subscriberCode = "0" + subscriberCode;
     }
-    const user = new User(email);
-    res.send(user);
-};
+    return `(${areaCode}) ${exchangeCode}-${subscriberCode}`;
+}
 
 module.exports = { createUser }
