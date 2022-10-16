@@ -21,8 +21,8 @@ class User {
         hasEmail === true ? this.email = generateEmail(this.name) : this.email = undefined;
         hasPhone === true ? this.phone = generatePhone() : this.phone = undefined;
         hasAge === true ? this.age = getYear(new Date()) - generateBirthYear() : this.age = undefined;
-        this.height = undefined;
-        this.weight = undefined;
+        hasHeight === true ? this.height = generateHeight(this.age, this.gender) : this.height = undefined;
+        hasWeight === true ? this.weight = generateWeight(this.age, this.gender) : this.height = undefined;
     }
 };
 
@@ -31,6 +31,8 @@ function createUser(req, res) {
     "email" in req.body ? hasEmail = true : hasEmail = undefined;
     "phone" in req.body ? hasPhone = true : hasPhone = undefined;
     "age" in req.body ? hasAge = true : hasAge = undefined;
+    "height" in req.body ? hasHeight = true : hasHeight = undefined;
+    "weight" in req.body ? hasWeight = true : hasWeight = undefined;
     const user = new User(hasEmail, hasPhone, hasAge, hasHeight, hasWeight);
     res.send(user);
 };
@@ -134,5 +136,85 @@ function generateBirthYear() {
     const birthYear = random.int((startYear), (endYear));
     return birthYear;
 };
+
+/*
+Returns the age range max value for a user for biometric lookup.
+
+@param  {number}    age     test user's age in years
+
+@return {number}            age range max corresponding to biometric data
+*/
+function getAgeRange(age) {
+    let ageRangeMax = 0;
+    switch(true) {
+        case age < 30:
+            ageRangeMax = 29;
+            break;
+        case age < 40:
+            ageRangeMax = 39;
+            break;
+        case age < 50:
+            ageRangeMax = 49;
+            break;
+        case age < 60:
+            ageRangeMax = 59;
+            break;
+        case age < 70:
+            ageRangeMax = 69;
+            break;
+        case age < 80:
+            ageRangeMax = 79;
+            break;
+        default:
+            ageRangeMax = 100;
+    }
+    return ageRangeMax;
+}
+
+/*
+Generates a height for the test user based on their age and gender.
+
+@param {number}     age     test user's age in years
+@param {string}     gender  test user's gender
+
+@return {number}    height  test user's height in centimeters
+*/
+function generateHeight(age, gender) {
+    const ageRange = getAgeRange(age);
+    let meanHeight = 0;
+    let heightStErr = 0;
+    for (const obj in biometricData) {
+        if (biometricData[obj]["Gender"] === gender && biometricData[obj]["Age Range Max"] === ageRange) {
+            meanHeight = biometricData[obj]["Mean Height"];
+            heightStErr = biometricData[obj]["Height Standard Error"];
+        }
+    }
+    const heightDist = random.normal((meanHeight), (heightStErr));
+    const height = Math.round(heightDist());
+    return height;
+};
+
+/*
+Generates a weight for the test user based on their age and gender.
+
+@param {number}     age     test user's age in years
+@param {string}     gender  test user's gender
+
+@return {number}    height  test user's weight in kilograms
+*/
+function generateWeight(age, gender) {
+    const ageRange = getAgeRange(age);
+    let meanWeight = 0;
+    let weightStErr = 0;
+    for (const obj in biometricData) {
+        if (biometricData[obj]["Gender"] === gender && biometricData[obj]["Age Range Max"] === ageRange) {
+            meanWeight = biometricData[obj]["Mean Weight"];
+            weightStErr = biometricData[obj]["Weight Standard Error"];
+        }
+    }
+    const weightDist = random.normal((meanWeight), (weightStErr));
+    const weight = Math.round(weightDist());
+    return weight;
+}
 
 module.exports = { createUser }
