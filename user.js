@@ -5,7 +5,9 @@ const femaleFirstNamesLib = require('@stdlib/datasets-female-first-names-en');
 const maleFirstNamesLib = require('@stdlib/datasets-male-first-names-en');
 const lastNamesLib = require('common-last-names');
 const emailDomains = require('email-domains');
+const biometricData = require('./biometric_data.json');
 const {addYears, getYear} = require('date-fns');
+
 const femaleFirstNames = femaleFirstNamesLib();
 const maleFirstNames = maleFirstNamesLib();
 
@@ -128,7 +130,7 @@ Generates a random birthdate.
 function generateBirthYear() {
     const today = new Date();
     const startYear = getYear(addYears(today, -85));
-    const endYear = getYear(addYears(today, -18));
+    const endYear = getYear(addYears(today, -20));
     const birthYear = random.int((startYear), (endYear));
     return birthYear;
 };

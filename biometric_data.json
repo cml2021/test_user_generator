@@ -1,0 +1,114 @@
+[
+    {
+      "Gender": "Male",
+      "Age Range Max": 29,
+      "Mean Height": 175.8,
+      "Height Standard Error": 0.3,
+      "Mean Weight": 85.5,
+      "Weight Standard Error": 1.44
+    },
+    {
+      "Gender": "Male",
+      "Age Range Max": 39,
+      "Mean Height": 176.3,
+      "Height Standard Error": 0.4,
+      "Mean Weight": 94.4,
+      "Weight Standard Error": 1.21
+    },
+    {
+      "Gender": "Male",
+      "Age Range Max": 49,
+      "Mean Height": 176.3,
+      "Height Standard Error": 0.41,
+      "Mean Weight": 93.9,
+      "Weight Standard Error": 1.04
+    },
+    {
+      "Gender": "Male",
+      "Age Range Max": 59,
+      "Mean Height": 175.4,
+      "Height Standard Error": 0.37,
+      "Mean Weight": 91.9,
+      "Weight Standard Error": 1.12
+    },
+    {
+      "Gender": "Male",
+      "Age Range Max": 69,
+      "Mean Height": 174.4,
+      "Height Standard Error": 0.45,
+      "Mean Weight": 91.2,
+      "Weight Standard Error": 0.81
+    },
+    {
+      "Gender": "Male",
+      "Age Range Max": 79,
+      "Mean Height": 173,
+      "Height Standard Error": 0.37,
+      "Mean Weight": 87.7,
+      "Weight Standard Error": 1.09
+    },
+    {
+      "Gender": "Male",
+      "Age Range Max": 100,
+      "Mean Height": 170.4,
+      "Height Standard Error": 0.45,
+      "Mean Weight": 80.5,
+      "Weight Standard Error": 0.9
+    },
+    {
+      "Gender": "Female",
+      "Age Range Max": 29,
+      "Mean Height": 162.6,
+      "Height Standard Error": 0.32,
+      "Mean Weight": 74.9,
+      "Weight Standard Error": 1.13
+    },
+    {
+      "Gender": "Female",
+      "Age Range Max": 39,
+      "Mean Height": 162.7,
+      "Height Standard Error": 0.37,
+      "Mean Weight": 79.3,
+      "Weight Standard Error": 0.99
+    },
+    {
+      "Gender": "Female",
+      "Age Range Max": 49,
+      "Mean Height": 162.3,
+      "Height Standard Error": 0.36,
+      "Mean Weight": 80.8,
+      "Weight Standard Error": 1.42
+    },
+    {
+      "Gender": "Female",
+      "Age Range Max": 59,
+      "Mean Height": 161.3,
+      "Height Standard Error": 0.36,
+      "Mean Weight": 78.7,
+      "Weight Standard Error": 1.01
+    },
+    {
+      "Gender": "Female",
+      "Age Range Max": 69,
+      "Mean Height": 160.7,
+      "Height Standard Error": 0.38,
+      "Mean Weight": 78.2,
+      "Weight Standard Error": 1.22
+    },
+    {
+      "Gender": "Female",
+      "Age Range Max": 79,
+      "Mean Height": 158.2,
+      "Height Standard Error": 0.36,
+      "Mean Weight": 74.7,
+      "Weight Standard Error": 0.95
+    },
+    {
+      "Gender": "Female",
+      "Age Range Max": 100,
+      "Mean Height": 155.6,
+      "Height Standard Error": 0.44,
+      "Mean Weight": 67.9,
+      "Weight Standard Error": 1.01
+    }
+  ]
