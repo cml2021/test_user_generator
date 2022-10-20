@@ -17,5 +17,10 @@ app.listen(PORT, () => {
 });
 
 app.post("/create", (req, res) => {
-    createUser(req, res);
+    const user = createUser(req, res);
+    testUser = user;
 });
+
+app.get("/user", (req, res) => {
+    res.render("user");
+})
