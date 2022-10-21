@@ -28,6 +28,10 @@ const dataSchema = new mongoose.Schema({
     weight: {
         required: false,
         type: Number
+    },
+    created: {
+        required: true,
+        type: Date
     }
 })
 

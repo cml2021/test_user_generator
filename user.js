@@ -23,6 +23,7 @@ class User {
         hasAge === true ? this.age = getYear(new Date()) - generateBirthYear() : this.age = undefined;
         hasHeight === true ? this.height = generateHeight(this.age, this.gender) : this.height = undefined;
         hasWeight === true ? this.weight = generateWeight(this.age, this.gender) : this.height = undefined;
+        this.created = new Date();
     }
 };
 
