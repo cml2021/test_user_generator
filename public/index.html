@@ -8,24 +8,24 @@
     <title>Test User Generator</title>
     <script>
         
-        document.addEventListener("DOMContentLoaded", addHandler);
+        // document.addEventListener("DOMContentLoaded", addHandler);
 
-        function addHandler(event) {
-            document.getElementById("submit").addEventListener("click", testFunc);
-        };
+        // function addHandler(event) {
+        //     document.getElementById("submit").addEventListener("click", testFunc);
+        // };
         
-        function testFunc(event) {
-            console.log("clicked");
-            window.location.href = "/user"
-            event.preventDefault();
-        }
+        // function testFunc(event) {
+        //     console.log("clicked");
+        //     window.location.href = "/user"
+        //     event.preventDefault();
+        // }
 
     </script>
 </head>
 
 <body>
     <h1>Generate a Test User</h1>
-    <form action="/create" method="POST">
+    <form action="/api/create" method="POST">
         <fieldset>
             <legend>Generate contact information:</legend>
             <input type="checkbox" name="email" id="email">

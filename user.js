@@ -26,7 +26,7 @@ class User {
     }
 };
 
-function createUser(req, res) {
+function createUser(req) {
     let [hasEmail, hasPhone, hasAge, hasHeight, hasWeight] = Array(5).fill(undefined);
     "email" in req.body ? hasEmail = true : hasEmail = undefined;
     "phone" in req.body ? hasPhone = true : hasPhone = undefined;
@@ -34,7 +34,7 @@ function createUser(req, res) {
     "height" in req.body ? hasHeight = true : hasHeight = undefined;
     "weight" in req.body ? hasWeight = true : hasWeight = undefined;
     const user = new User(hasEmail, hasPhone, hasAge, hasHeight, hasWeight);
-    res.send(user);
+    return user;
 };
 
 /*
