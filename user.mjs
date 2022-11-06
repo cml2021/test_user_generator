@@ -1,12 +1,12 @@
 'use strict';
 
-const random = require('random');
-const femaleFirstNamesLib = require('@stdlib/datasets-female-first-names-en');
-const maleFirstNamesLib = require('@stdlib/datasets-male-first-names-en');
-const lastNamesLib = require('common-last-names');
-const emailDomains = require('email-domains');
-const biometricData = require('./biometric_data.json');
-const {addYears, getYear} = require('date-fns');
+import random from "random";
+import femaleFirstNamesLib from "@stdlib/datasets-female-first-names-en";
+import maleFirstNamesLib from "@stdlib/datasets-male-first-names-en";
+import lastNamesLib from "common-last-names";
+import emailDomains from "email-domains";
+import biometricData from "./biometric_data.json" assert { type: "json" };
+import {addYears, getYear} from "date-fns";
 
 const femaleFirstNames = femaleFirstNamesLib();
 const maleFirstNames = maleFirstNamesLib();
@@ -218,4 +218,4 @@ function generateWeight(age, gender) {
     return weight;
 }
 
-module.exports = { createUser }
+export { createUser };
